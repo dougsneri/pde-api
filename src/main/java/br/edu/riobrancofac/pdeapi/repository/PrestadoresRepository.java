@@ -1,6 +1,6 @@
 package br.edu.riobrancofac.pdeapi.repository;
 
-import br.edu.riobrancofac.pde.entity.Prestador;
+import br.edu.riobrancofac.pdeapi.entity.Prestador;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PrestadoresRepository extends JpaRepository<Prestador, Integer> {

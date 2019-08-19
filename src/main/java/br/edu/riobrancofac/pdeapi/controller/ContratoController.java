@@ -1,7 +1,7 @@
 package br.edu.riobrancofac.pdeapi.controller;
 
-import br.edu.riobrancofac.pde.entity.Contrato;
-import br.edu.riobrancofac.pde.repository.ContratosRepository;
+import br.edu.riobrancofac.pdeapi.entity.Contrato;
+import br.edu.riobrancofac.pdeapi.repository.ContratosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
 package br.edu.riobrancofac.pdeapi.controller;
 
-import br.edu.riobrancofac.pde.entity.Prestador;
-import br.edu.riobrancofac.pde.repository.PrestadoresRepository;
+import br.edu.riobrancofac.pdeapi.entity.Prestador;
+import br.edu.riobrancofac.pdeapi.repository.PrestadoresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
