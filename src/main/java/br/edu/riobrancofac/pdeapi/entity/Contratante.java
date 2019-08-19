@@ -13,7 +13,8 @@ public class Contratante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @Column(name = "id_contratante")
+    private Integer idContratante;
 
     @Column(name = "cpf")
     private String cpf;
@@ -27,7 +28,7 @@ public class Contratante {
     @Column(name = "data_nascimento")
     private Date dataNascimento;
 
-    @OneToMany(mappedBy = "contratantes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "contratante")
     private List<Contrato> contratos;
 
 }
