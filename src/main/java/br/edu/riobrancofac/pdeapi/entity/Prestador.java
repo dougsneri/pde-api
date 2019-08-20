@@ -1,15 +1,17 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Data
 @Entity
 @Table(name = "prestadores")
-public class Prestador {
+public class Prestador implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,10 +27,47 @@ public class Prestador {
     @Column(name = "sobrenome")
     private String sobrenome;
 
-    @Column(name = "data_nascimento")
-    private Date dataNascimento;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "prestador")
+    @OneToMany(mappedBy = "prestador", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Contrato> contratos;
 
+    public Integer getIdPrestador() {
+        return idPrestador;
+    }
+
+    public void setIdPrestador(Integer idPrestador) {
+        this.idPrestador = idPrestador;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public List<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(List<Contrato> contratos) {
+        this.contratos = contratos;
+    }
 }
