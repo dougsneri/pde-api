@@ -2,6 +2,7 @@ package br.edu.riobrancofac.pdeapi.controller;
 
 import br.edu.riobrancofac.pdeapi.entity.Prestador;
 import br.edu.riobrancofac.pdeapi.repository.PrestadoresRepository;
+import br.edu.riobrancofac.pdeapi.service.PrestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,46 +13,30 @@ import java.util.List;
 public class PrestadorController {
 
     @Autowired
-    private PrestadoresRepository repository;
+    private PrestadorService service;
 
     @GetMapping(value = "listar")
     public List<Prestador> listarPrestadores() {
-        return repository.findAll();
+        return service.listarPrestadores();
     }
 
-//    @GetMapping(value = "listar/por-nome")
-//    public List<Prestador> pesquisarPrestadores(@RequestParam String nome) {
-//        return repository.pesquisarPrestador(nome);
-//    }
+    @GetMapping(value = "pesquisar/por-cpf/{cpf}")
+    public Prestador pesquisarPrestador(@PathVariable String cpf) {
 
-//    @GetMapping(value = "listar/por-nome-comecando-com")
-//    public List<Prestador> porNomeComecandoCom(@RequestParam String nome) {
-//        return repository.findByNomeStartingWithIgnoreCase(nome);
-//    }
+        return service.pesquisarCpfPrestador(cpf);
+    }
 
-//    @GetMapping(value = "pesquisar/por-cpf/{cpf}")
-//    public Prestador pesquisarPrestador(@PathVariable Long cpf) {
-//        return repository.getOne(cpf);
-//    }
-
-//    @GetMapping(value = "pesquisar/por-nome")
-//    public Prestador porNome(@RequestParam String nome) {
-//        return repository.findByNome(nome);
-//    }
-
-    @PostMapping(value = "salvar")
+    @PostMapping(value = "atualizar")
     public Prestador salvarPrestador(@RequestBody Prestador prestador) {
 
-        return repository.save(prestador);
+        return service.atualizarPrestador(prestador);
     }
 
-//    @DeleteMapping(value = "excluir/{cpf}")
-//    public Prestador deletar(@PathVariable Long cpf) {
-//        Prestador prestadorDeletado = repository.getOne(cpf);
-//        repository.deleteById(cpf);
-//
-//        return prestadorDeletado;
-//    }
+    @DeleteMapping(value = "excluir/por-cpf/{cpf}")
+    public Prestador excluirCpfPrestador(@PathVariable String cpf) {
+
+        return service.excluirCpfPrestador(cpf);
+    }
 }
 
 

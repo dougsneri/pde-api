@@ -1,8 +1,12 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Data
 @Entity
 @Table(name = "contratos")
 public class Contrato implements Serializable {
@@ -11,36 +15,18 @@ public class Contrato implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_contrato")
+    @Column(name = "id_contrato", nullable=false)
+    @JsonProperty("id_contrato")
     private Integer idContrato;
 
     @ManyToOne
+    @JoinColumn(name = "prestador_id", nullable=false)
+    @JsonProperty("prestador")
     private Prestador prestador;
 
     @ManyToOne
+    @JoinColumn(name = "contratante_id", nullable=false)
+    @JsonProperty("contratante")
     private Contratante contratante;
 
-    public Integer getIdContrato() {
-        return idContrato;
-    }
-
-    public void setIdContrato(Integer idContrato) {
-        this.idContrato = idContrato;
-    }
-
-    public Prestador getPrestador() {
-        return prestador;
-    }
-
-    public void setPrestador(Prestador prestador) {
-        this.prestador = prestador;
-    }
-
-    public Contratante getContratante() {
-        return contratante;
-    }
-
-    public void setContratante(Contratante contratante) {
-        this.contratante = contratante;
-    }
 }

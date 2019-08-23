@@ -1,11 +1,14 @@
- package br.edu.riobrancofac.pdeapi.entity;
+package br.edu.riobrancofac.pdeapi.entity;
 
- import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
- import javax.persistence.*;
- import java.io.Serializable;
- import java.util.List;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
+@Data
 @Entity
 @Table(name = "contratantes")
 public class Contratante implements Serializable {
@@ -14,59 +17,24 @@ public class Contratante implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_contratante")
+    @Column(name = "id_contratante", nullable=false)
+    @JsonProperty("id_contratante")
     private Integer idContratante;
 
-    @Column(name = "cpf")
+    @Column(name = "cpf", nullable=false)
+    @JsonProperty("cpf")
     private String cpf;
 
     @Column(name = "nome")
+    @JsonProperty("nome")
     private String nome;
 
-    @Column(name = "sobrenome")
+    @Column(name = "sobrenome", nullable=false)
+    @JsonProperty("sobrenome")
     private String sobrenome;
 
-    @OneToMany(mappedBy = "contratante", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contratante", targetEntity = Contrato.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Contrato> contratos;
 
-    public Integer getIdContratante() {
-        return idContratante;
-    }
-
-    public void setIdContratante(Integer idContratante) {
-        this.idContratante = idContratante;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
-
-    public List<Contrato> getContratos() {
-        return contratos;
-    }
-
-    public void setContratos(List<Contrato> contratos) {
-        this.contratos = contratos;
-    }
 }
