@@ -7,7 +7,10 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+
+import static br.edu.riobrancofac.pdeapi.utils.FormataDados.removeFormatacao;
 
 @Data
 @Entity
@@ -24,7 +27,7 @@ public class Prestador implements Serializable {
 
     @Column(name = "cpf", nullable = false)
     @JsonProperty("cpf")
-    @Size(min = 11, max = 11, message = "O CPF deve ter 11 caracteres tendo apenas números")
+    @Size(min = 11, max = 11, message = "O CPF deve ter 11 caracteres sendo destes 11 apenas números")
     private String cpf;
 
     @Column(name = "nome", nullable = false)
@@ -39,4 +42,26 @@ public class Prestador implements Serializable {
     @JsonIgnore
     private List<Contrato> contratos;
 
+    private Date dataNascimento;
+    private String ddd1;
+    private String telefone1;
+    private String ddd2;
+    private String telefone2;
+    private String email;
+    private Boolean statusPrestador;
+
+    private String usuario;
+    private String senha;
+
+    private String cep;
+    private String rua;
+    private String numero;
+    private String complemento;
+    private String bairro;
+    private String cidade;
+    private String estado;
+
+    public void setCpf(String cpf) {
+        this.cpf = removeFormatacao(cpf);
+    }
 }
