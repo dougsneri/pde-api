@@ -42,7 +42,7 @@ public class PrestadorService {
     }
 
     public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
-        Response<Prestador> prestadorResponse = new Response<Prestador>();
+        Response<Prestador> prestadorResponse = new Response<>();
 
         prestador.setIdPrestador(getIdPrestadorCadastrado(prestador, result));
 
@@ -51,7 +51,7 @@ public class PrestadorService {
             return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
-        validaPrestadorNaoCadastrado(prestador, result);
+        validaPrestadorNaoCadastrado(prestador.getCpf(), result);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
@@ -71,20 +71,38 @@ public class PrestadorService {
     public ResponseEntity<Prestador> pesquisarCpfPrestador(String cpf) {
         Prestador prestador = repository.findByCpf(cpf);
 
-        return new ResponseEntity<Prestador>(repository.getOne(prestador.getIdPrestador()), HttpStatus.OK);
+        return new ResponseEntity<>(repository.getOne(prestador.getIdPrestador()), HttpStatus.OK);
     }
 
-    public ResponseEntity<Prestador> excluirCpfPrestador(String cpf) {
-        Prestador prestadorDeletado = pesquisarCpfPrestador(cpf).getBody();
-        repository.deleteById(prestadorDeletado.getIdPrestador());
+    public ResponseEntity<Response<Prestador>> desativarPrestador(String cpf) {
+        Response<Prestador> prestadorResponse = new Response<>();
 
-        return new ResponseEntity<Prestador>(prestadorDeletado, HttpStatus.NO_CONTENT);
+        Prestador prestadorParaDesativar = repository.findByCpf(cpf);
+
+        if (prestadorParaDesativar == null) {
+            prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
+            return ResponseEntity.badRequest().body(prestadorResponse);
+        }
+
+        if (prestadorParaDesativar.getStatusPrestador().equals(Boolean.FALSE)) {
+            prestadorResponse.getErrors().add("Este CPF já foi desativado.");
+            return ResponseEntity.badRequest().body(prestadorResponse);
+        }
+
+        prestadorParaDesativar.setStatusPrestador(Boolean.FALSE);
+
+        repository.save(prestadorParaDesativar);
+
+        prestadorResponse.setData(prestadorParaDesativar);
+
+        return new ResponseEntity<>(prestadorResponse, HttpStatus.ACCEPTED);
+
     }
 
     private Integer getIdPrestadorCadastrado(Prestador prestador, BindingResult result) {
         Prestador prestadorTemp = repository.findByCpf(prestador.getCpf());
         if ((prestadorTemp == null) || prestadorTemp.getCpf() == null) {
-            validaPrestadorNaoCadastrado(prestador, result);
+            validaPrestadorNaoCadastrado(prestador.getCpf(), result);
             return null;
         }
         return prestadorTemp.getIdPrestador();
@@ -92,15 +110,15 @@ public class PrestadorService {
 
     private void validaPrestadorCadastrado(Prestador prestador, BindingResult result) {
         Prestador prestadorJaCadastrado = repository.findByCpf(prestador.getCpf());
-        if (!(prestadorJaCadastrado == null) || !(prestadorJaCadastrado.getCpf() == null)) {
+        if (!(prestadorJaCadastrado == null)) {
             result.addError(new ObjectError("prestador", "Este CPF já está cadastrado."));
         }
     }
 
-    private void validaPrestadorNaoCadastrado(Prestador prestador, BindingResult result) {
-        Prestador prestadorJaCadastrado = repository.findByCpf(prestador.getCpf());
+    private void validaPrestadorNaoCadastrado(String cpf, BindingResult result) {
+        Prestador prestadorJaCadastrado = repository.findByCpf(cpf);
         if (prestadorJaCadastrado == null || prestadorJaCadastrado.getCpf() == null) {
-            result.addError(new ObjectError("prestador", "Este CPF não existe."));
+            result.addError(new ObjectError("prestador", "Este CPF não existe em nossa base de dados."));
         }
     }
 }

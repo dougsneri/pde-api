@@ -1,6 +1,9 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
+import br.edu.riobrancofac.pdeapi.enums.Genero;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -18,6 +21,8 @@ import static br.edu.riobrancofac.pdeapi.utils.FormataDados.removeFormatacao;
 @Data
 @Entity
 @Table(name = "prestadores")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Prestador implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,17 +36,17 @@ public class Prestador implements Serializable {
     @Column(name = "cpf")
     @JsonProperty("cpf")
     @Size(min = 11, max = 11, message = "O CPF deve ter 11 caracteres sendo destes 11 apenas números.")
-    @NotNull
+    @NotNull(message = "cpf não pode ser nulo")
     private String cpf;
 
     @Column(name = "nome")
     @JsonProperty("nome")
-    @NotNull
+    @NotNull(message = "nome não pode ser nulo")
     private String nome;
 
     @Column(name = "sobrenome")
     @JsonProperty("sobrenome")
-    @NotNull
+    @NotNull(message = "sobrenome não pode ser nulo")
     private String sobrenome;
 
     @OneToMany(mappedBy = "prestador", targetEntity = Contrato.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -50,73 +55,93 @@ public class Prestador implements Serializable {
 
     @Column(name = "data_nascimento")
     @JsonProperty("data_nascimento")
-    @NotNull
+    @NotNull(message = "Data de nascimento não pode ser nula")
     @Past
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dataNascimento;
+
     @Column(name = "ddd1")
     @JsonProperty("ddd1")
     @Size(min = 2, max = 2, message = "DDD inválido, informe um DDD com apenas dois digitos.")
-    @NotNull
+    @NotNull(message = "ddd não pode ser nulo")
     private String ddd1;
+
     @Column(name = "telefone1")
     @JsonProperty("telefone1")
     @Size(min = 8, max = 9, message = "Telefone inválido, informe um telefone com 8 digitos ou 9 para celular.")
-    @NotNull
+    @NotNull(message = "telefone não pode ser nulo")
     private String telefone1;
+
     @Column(name = "ddd2")
     @JsonProperty("ddd2")
     @Size(min = 2, max = 2, message = "DDD inválido, informe um DDD com apenas dois digitos.")
     private String ddd2;
+
     @Column(name = "telefone2")
     @JsonProperty("telefone2")
     @Size(min = 8, max = 9, message = "Telefone inválido, informe um telefone com 8 digitos ou 9 para celular.")
     private String telefone2;
+
     @Column(name = "email")
     @JsonProperty("email")
     @Email(message = "Email inválido, informe um e-mail válido")
-    @NotNull
+    @NotNull(message = "e-mail não pode ser nulo")
     private String email;
+
     @Column(name = "status_prestador")
     @JsonProperty("status_prestador")
-    @NotNull
+    @NotNull(message = "Status não pode ser nulo")
     private Boolean statusPrestador;
+
+    @Column(name = "genero")
+    @JsonProperty("genero")
+    @NotNull(message = "Gênero não pode ser nulo")
+    @Enumerated
+    private Genero genero;
 
     @Column(name = "usuario")
     @JsonProperty("usuario")
-    @NotNull
+    @NotNull(message = "Usuário não pode ser nulo")
     private String usuario;
+
     @Column(name = "senha")
     @JsonProperty("senha")
-    @NotNull
+    @NotNull(message = "Senha não pode ser nula")
     private String senha;
 
     @Column(name = "cep")
     @JsonProperty("cep")
     @Size(min = 8, max = 8, message = "Cep inválido, informe um cep com 8 digitos separados por hífen ou não.")
-    @NotNull
+    @NotNull(message = "Cep não pode ser nulo")
     private String cep;
+
     @Column(name = "rua")
     @JsonProperty("rua")
-    @NotNull
+    @NotNull(message = "Rua não pode ser nulo")
     private String rua;
+
     @Column(name = "numero")
     @JsonProperty("numero")
-    @NotNull
+    @NotNull(message = "Numero não pode ser nulo")
     private String numero;
+
     @Column(name = "complemento")
     @JsonProperty("complemento")
     private String complemento;
+
     @Column(name = "bairro")
     @JsonProperty("bairro")
-    @NotNull
+    @NotNull(message = "Bairro não pode ser nulo")
     private String bairro;
+
     @Column(name = "cidade")
     @JsonProperty("cidade")
-    @NotNull
+    @NotNull(message = "Cidade não pode ser nula")
     private String cidade;
+
     @Column(name = "estado")
     @JsonProperty("estado")
-    @NotNull
+    @NotNull(message = "Estado não pode ser nulo")
     private String estado;
 
     public void setCpf(String cpf) {

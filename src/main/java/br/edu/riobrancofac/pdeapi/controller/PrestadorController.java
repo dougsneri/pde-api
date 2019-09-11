@@ -1,7 +1,6 @@
 package br.edu.riobrancofac.pdeapi.controller;
 
 import br.edu.riobrancofac.pdeapi.entity.Prestador;
-import br.edu.riobrancofac.pdeapi.repository.PrestadoresRepository;
 import br.edu.riobrancofac.pdeapi.response.Response;
 import br.edu.riobrancofac.pdeapi.service.PrestadorService;
 import org.slf4j.Logger;
@@ -49,9 +48,9 @@ public class PrestadorController {
         return service.atualizarPrestador(prestador, result);
     }
 
-    @DeleteMapping(value = "excluir/por-cpf/{cpf}")
-    public ResponseEntity<Prestador> excluirPrestador(@PathVariable String cpf) {
-        return service.excluirCpfPrestador(cpf);
+    @PostMapping(value = "desativar/por-cpf/{cpf}")
+    public ResponseEntity<Response<Prestador>> desativarPrestador(@PathVariable String cpf) {
+        return service.desativarPrestador(cpf);
     }
 
 }
