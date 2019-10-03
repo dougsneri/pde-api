@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -15,18 +16,20 @@ public class Contrato implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_contrato", nullable=false)
+    @Column(name = "id_contrato", nullable = false)
     @JsonProperty("id_contrato")
     private Integer idContrato;
 
     @ManyToOne
-    @JoinColumn(name = "prestador_id", nullable=false)
+    @JoinColumn(name = "prestador_id")
     @JsonProperty("prestador")
+    @NotNull
     private Prestador prestador;
 
     @ManyToOne
-    @JoinColumn(name = "contratante_id", nullable=false)
+    @JoinColumn(name = "contratante_id")
     @JsonProperty("contratante")
+    @NotNull
     private Contratante contratante;
 
 }

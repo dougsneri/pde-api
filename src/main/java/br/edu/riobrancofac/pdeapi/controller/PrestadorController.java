@@ -24,33 +24,38 @@ public class PrestadorController {
 
     @GetMapping(value = "listar")
     public ResponseEntity<List<Prestador>> listarPrestadores() {
+        log.info("Listando Prestadores.");
         return service.listarPrestadores();
     }
 
     @GetMapping(value = "pesquisar/por-cpf/{cpf}")
     public ResponseEntity<Prestador> pesquisarPrestador(@PathVariable String cpf) {
+        log.info("Buscando prestador do cpf: " + cpf);
         return service.pesquisarCpfPrestador(cpf);
     }
 
     @PostMapping(value = "adicionar")
     public ResponseEntity<Response<Prestador>> adicionarPrestador(@Valid @RequestBody Prestador prestador, BindingResult result) {
-
         log.info("Cadastrando Prestador: " + prestador.getNome() + " " + prestador.getSobrenome());
-
         return service.adicionarPrestador(prestador, result);
     }
 
     @PostMapping(value = "atualizar")
     public ResponseEntity<Response<Prestador>> atualizarPrestador(@Valid @RequestBody Prestador prestador, BindingResult result) {
-
         log.info("Atualizando Prestador: " + prestador.getNome() + " " + prestador.getSobrenome());
-
         return service.atualizarPrestador(prestador, result);
     }
 
     @PostMapping(value = "desativar/por-cpf/{cpf}")
     public ResponseEntity<Response<Prestador>> desativarPrestador(@PathVariable String cpf) {
+        log.info("Desativando Prestador do cpf : " + cpf);
         return service.desativarPrestador(cpf);
+    }
+
+    @PostMapping(value = "ativar/por-cpf/{cpf}")
+    public ResponseEntity<Response<Prestador>> ativarPrestador(@PathVariable String cpf) {
+        log.info("Ativando Prestador do cpf : " + cpf);
+        return service.ativarPrestador(cpf);
     }
 
 }

@@ -91,7 +91,7 @@ public class Prestador implements Serializable {
     @Column(name = "status_prestador")
     @JsonProperty("status_prestador")
     @NotNull(message = "Status não pode ser nulo")
-    private Boolean statusPrestador;
+    private Boolean statusPrestador = Boolean.TRUE;
 
     @Column(name = "genero")
     @JsonProperty("genero")
@@ -99,50 +99,13 @@ public class Prestador implements Serializable {
     @Enumerated
     private Genero genero;
 
-    @Column(name = "usuario")
-    @JsonProperty("usuario")
-    @NotNull(message = "Usuário não pode ser nulo")
-    private String usuario;
-
     @Column(name = "senha")
     @JsonProperty("senha")
     @NotNull(message = "Senha não pode ser nula")
     private String senha;
 
-    @Column(name = "cep")
-    @JsonProperty("cep")
-    @Size(min = 8, max = 8, message = "Cep inválido, informe um cep com 8 digitos separados por hífen ou não.")
-    @NotNull(message = "Cep não pode ser nulo")
-    private String cep;
-
-    @Column(name = "rua")
-    @JsonProperty("rua")
-    @NotNull(message = "Rua não pode ser nulo")
-    private String rua;
-
-    @Column(name = "numero")
-    @JsonProperty("numero")
-    @NotNull(message = "Numero não pode ser nulo")
-    private String numero;
-
-    @Column(name = "complemento")
-    @JsonProperty("complemento")
-    private String complemento;
-
-    @Column(name = "bairro")
-    @JsonProperty("bairro")
-    @NotNull(message = "Bairro não pode ser nulo")
-    private String bairro;
-
-    @Column(name = "cidade")
-    @JsonProperty("cidade")
-    @NotNull(message = "Cidade não pode ser nula")
-    private String cidade;
-
-    @Column(name = "estado")
-    @JsonProperty("estado")
-    @NotNull(message = "Estado não pode ser nulo")
-    private String estado;
+    @Embedded
+    private Endereco endereco;
 
     public void setCpf(String cpf) {
         this.cpf = removeFormatacao(cpf);
@@ -168,15 +131,4 @@ public class Prestador implements Serializable {
         this.telefone2 = removeFormatacao(telefone2);
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario.toLowerCase();
-    }
-
-    public void setCep(String cep) {
-        this.cep = removeFormatacao(cep);
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento.toLowerCase();
-    }
 }

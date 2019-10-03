@@ -7,4 +7,6 @@ public interface PrestadoresRepository extends JpaRepository<Prestador, Integer>
 
     Prestador findByCpf(String cpf);
 
+    Prestador findByEmail(String email);
+
 }

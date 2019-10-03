@@ -44,14 +44,14 @@ public class PrestadorService {
     public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
         Response<Prestador> prestadorResponse = new Response<>();
 
-        prestador.setIdPrestador(getIdPrestadorCadastrado(prestador, result));
+//        prestador.setIdPrestador(getIdPrestadorCadastrado(prestador, result));
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
             return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
-        validaPrestadorNaoCadastrado(prestador.getCpf(), result);
+        validaPrestadorNaoCadastrado(prestador, result);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
@@ -99,26 +99,63 @@ public class PrestadorService {
 
     }
 
-    private Integer getIdPrestadorCadastrado(Prestador prestador, BindingResult result) {
-        Prestador prestadorTemp = repository.findByCpf(prestador.getCpf());
-        if ((prestadorTemp == null) || prestadorTemp.getCpf() == null) {
-            validaPrestadorNaoCadastrado(prestador.getCpf(), result);
-            return null;
+    public ResponseEntity<Response<Prestador>> ativarPrestador(String cpf) {
+        Response<Prestador> prestadorResponse = new Response<>();
+
+        Prestador prestadorParaAtivar = repository.findByCpf(cpf);
+
+        if (prestadorParaAtivar == null) {
+            prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
-        return prestadorTemp.getIdPrestador();
+
+        if (prestadorParaAtivar.getStatusPrestador().equals(Boolean.TRUE)) {
+            prestadorResponse.getErrors().add("Este CPF já está ativo.");
+            return ResponseEntity.badRequest().body(prestadorResponse);
+        }
+
+        prestadorParaAtivar.setStatusPrestador(Boolean.TRUE);
+
+        repository.save(prestadorParaAtivar);
+
+        prestadorResponse.setData(prestadorParaAtivar);
+
+        return new ResponseEntity<>(prestadorResponse, HttpStatus.ACCEPTED);
     }
+
+//    private Integer getIdPrestadorCadastrado(Prestador prestador, BindingResult result) {
+//        Prestador prestadorTemp = repository.findByCpf(prestador.getCpf());
+//        if ((prestadorTemp == null) || prestadorTemp.getCpf() == null) {
+//            validaPrestadorNaoCadastrado(prestador.getCpf(), result);
+//            return null;
+//        }
+//        return prestadorTemp.getIdPrestador();
+//    }
 
     private void validaPrestadorCadastrado(Prestador prestador, BindingResult result) {
-        Prestador prestadorJaCadastrado = repository.findByCpf(prestador.getCpf());
-        if (!(prestadorJaCadastrado == null)) {
+        Prestador cpfPrestadorJaCadastrado = repository.findByCpf(prestador.getCpf());
+        if (!(cpfPrestadorJaCadastrado == null)) {
             result.addError(new ObjectError("prestador", "Este CPF já está cadastrado."));
+        }
+        Prestador emailPrestadorJaCadastrado = repository.findByEmail(prestador.getEmail());
+        if (!(emailPrestadorJaCadastrado == null)) {
+            result.addError(new ObjectError("prestador", "Este e-mail já está cadastrado."));
         }
     }
 
-    private void validaPrestadorNaoCadastrado(String cpf, BindingResult result) {
-        Prestador prestadorJaCadastrado = repository.findByCpf(cpf);
-        if (prestadorJaCadastrado == null || prestadorJaCadastrado.getCpf() == null) {
-            result.addError(new ObjectError("prestador", "Este CPF não existe em nossa base de dados."));
+    private void validaPrestadorNaoCadastrado(Prestador prestador, BindingResult result) {
+        Prestador prestadorJaCadastradoNesteCpf = repository.findByCpf(prestador.getCpf());
+        if (prestadorJaCadastradoNesteCpf == null) {
+            result.addError(new ObjectError("prestador", "Este CPF não existe em nossa base de dados para atualizarmos."));
         }
+        Prestador prestadorJaCadastradoNesteEmail = repository.findByEmail(prestador.getEmail());
+        if(!(prestadorJaCadastradoNesteEmail == null)) {
+            if(!prestadorJaCadastradoNesteEmail.getEmail().equals(prestador.getEmail())) {
+                result.addError(new ObjectError("prestador", "O e-mail que você está tentando atualizar já existe cadastrado em nossa base de dados."));
+            }
+        }
+        prestador.setIdPrestador(prestadorJaCadastradoNesteCpf.getIdPrestador());
+
     }
+
 }
