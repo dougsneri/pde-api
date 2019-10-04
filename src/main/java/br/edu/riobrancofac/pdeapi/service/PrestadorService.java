@@ -154,7 +154,9 @@ public class PrestadorService {
                 result.addError(new ObjectError("prestador", "O e-mail que você está tentando atualizar já existe cadastrado em nossa base de dados."));
             }
         }
-        prestador.setIdPrestador(prestadorJaCadastradoNesteCpf.getIdPrestador());
+        if (!(prestadorJaCadastradoNesteCpf == null)) {
+            prestador.setIdPrestador(prestadorJaCadastradoNesteCpf.getIdPrestador());
+        }
 
     }
 

@@ -19,8 +19,8 @@ public class ContratanteController {
         return repository.findAll();
     }
 
-    @PostMapping(value = "salvar")
-    public Contratante salvarContratante(@RequestBody Contratante contratante) {
+    @PostMapping(value = "adicionar")
+    public Contratante adicionarContratante(@RequestBody Contratante contratante) {
 
         return repository.save(contratante);
     }

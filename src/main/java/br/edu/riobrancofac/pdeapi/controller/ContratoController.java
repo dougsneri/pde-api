@@ -19,8 +19,8 @@ public class ContratoController {
         return repository.findAll();
     }
 
-    @PostMapping(value = "salvar")
-    public Contrato salvarPrestador(@RequestBody Contrato contrato) {
+    @PostMapping(value = "adicionar")
+    public Contrato adicionarPrestador(@RequestBody Contrato contrato) {
 
         return repository.save(contrato);
     }
