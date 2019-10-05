@@ -1,7 +1,10 @@
 package br.edu.riobrancofac.pdeapi.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import br.com.caelum.stella.format.CNPJFormatter;
 import br.com.caelum.stella.format.CPFFormatter;
@@ -99,6 +102,14 @@ public class FormataDados {
 
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return dateTime.format(formatter2);
+    }
+
+    public static String convDataBanco(String dataSistema) throws ParseException {
+        Date dataFormatada;
+        String dataBanco = "";
+        dataFormatada = new SimpleDateFormat("dd/MM/yyyy").parse(dataSistema);
+        dataBanco = new SimpleDateFormat("yyyy-MM-dd").format(dataFormatada);
+        return dataBanco;
     }
 
     public static String formataTamanhoCampo(String campo, int tamanho) {
