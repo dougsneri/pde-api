@@ -1,7 +1,10 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
 import br.edu.riobrancofac.pdeapi.enums.Genero;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -14,7 +17,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import static br.edu.riobrancofac.pdeapi.utils.FormataDados.removeFormatacao;
@@ -57,7 +59,7 @@ public class Prestador implements Serializable {
     @Column(name = "data_nascimento")
     @JsonProperty("data_nascimento")
     @NotNull(message = "Data de nascimento não pode ser nula")
-//    @Past
+    @Past
     private LocalDate dataNascimento;
 
     @Column(name = "ddd1")
@@ -104,12 +106,12 @@ public class Prestador implements Serializable {
     @NotNull(message = "Senha não pode ser nula")
     private String senha;
 
-    @Column(name = "data_cadastro")
-    @JsonProperty("data_cadastro")
+    @Column(name = "data_cadastro_prestador")
+    @JsonProperty("data_cadastro_prestador")
     @NotNull
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private LocalDate dataCadastro = LocalDate.now();
+    private LocalDate dataCadastroPrestador = LocalDate.now();
 
     @Embedded
     private Endereco endereco;

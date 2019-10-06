@@ -7,4 +7,6 @@ public interface ContratantesRepository extends JpaRepository<Contratante, Integ
 
     Contratante findByCpf(String cpf);
 
+    Contratante findByEmail(String email);
+
 }

@@ -41,10 +41,10 @@ public class PrestadorService {
         return ResponseEntity.ok(prestadorResponse);
     }
 
-    public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
+    /*public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
         Response<Prestador> prestadorResponse = new Response<>();
 
-//        prestador.setIdPrestador(getIdPrestadorCadastrado(prestador, result));
+        prestador.setIdPrestador(getIdPrestadorCadastrado(prestador, result));
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
@@ -61,10 +61,9 @@ public class PrestadorService {
         prestadorResponse.setData(repository.save(prestador));
 
         return new ResponseEntity<>(prestadorResponse, HttpStatus.CREATED);
-    }
+    }*/
 
     public ResponseEntity<List<Prestador>> listarPrestadores() {
-
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
     }
 
@@ -143,7 +142,7 @@ public class PrestadorService {
         }
     }
 
-    private void validaPrestadorNaoCadastrado(Prestador prestador, BindingResult result) {
+/*    private void validaPrestadorNaoCadastrado(Prestador prestador, BindingResult result) {
         Prestador prestadorJaCadastradoNesteCpf = repository.findByCpf(prestador.getCpf());
         if (prestadorJaCadastradoNesteCpf == null) {
             result.addError(new ObjectError("prestador", "Este CPF não existe em nossa base de dados para atualizarmos."));
@@ -157,7 +156,6 @@ public class PrestadorService {
         if (!(prestadorJaCadastradoNesteCpf == null)) {
             prestador.setIdPrestador(prestadorJaCadastradoNesteCpf.getIdPrestador());
         }
-
-    }
+    }*/
 
 }

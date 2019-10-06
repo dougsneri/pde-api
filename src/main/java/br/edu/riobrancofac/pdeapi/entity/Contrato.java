@@ -1,11 +1,16 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -32,4 +37,20 @@ public class Contrato implements Serializable {
     @NotNull
     private Contratante contratante;
 
+    @Column(name = "servico_prestado")
+    @JsonProperty("servico_prestado")
+    @NotNull(message = "A descrição do serviço prestado não pode ser nula.")
+    private String servicoPrestado;
+
+    @Column(name = "data_servico")
+    @JsonProperty("data_servico")
+    @NotNull(message = "Data da realização do serviço não pode ser nula.")
+    private LocalDate dataServico;
+
+    @Column(name = "data_cadastro_contrato")
+    @JsonProperty("data_cadastro_contrato")
+    @NotNull
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private LocalDate dataCadastroContrato = LocalDate.now();
 }

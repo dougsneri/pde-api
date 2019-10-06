@@ -40,11 +40,11 @@ public class PrestadorController {
         return service.adicionarPrestador(prestador, result);
     }
 
-    @PostMapping(value = "atualizar")
-    public ResponseEntity<Response<Prestador>> atualizarPrestador(@Valid @RequestBody Prestador prestador, BindingResult result) {
-        log.info("Atualizando Prestador: " + prestador.getNome() + " " + prestador.getSobrenome());
-        return service.atualizarPrestador(prestador, result);
-    }
+//    @PostMapping(value = "atualizar")
+//    public ResponseEntity<Response<Prestador>> atualizarPrestador(@Valid @RequestBody Prestador prestador, BindingResult result) {
+//        log.info("Atualizando Prestador: " + prestador.getNome() + " " + prestador.getSobrenome());
+//        return service.atualizarPrestador(prestador, result);
+//    }
 
     @PostMapping(value = "desativar/por-cpf/{cpf}")
     public ResponseEntity<Response<Prestador>> desativarPrestador(@PathVariable String cpf) {
