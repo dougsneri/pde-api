@@ -90,8 +90,8 @@ public class Contratante implements Serializable {
     @NotNull(message = "e-mail não pode ser nulo")
     private String email;
 
-    @Column(name = "status_contratante")
-    @JsonProperty("status_contratante")
+    @Column(name = "status")
+    @JsonProperty("status")
     @NotNull(message = "Status não pode ser nulo")
     private Boolean statusContratante = Boolean.TRUE;
 

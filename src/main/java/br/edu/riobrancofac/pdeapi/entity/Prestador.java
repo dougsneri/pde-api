@@ -90,8 +90,8 @@ public class Prestador implements Serializable {
     @NotNull(message = "e-mail não pode ser nulo")
     private String email;
 
-    @Column(name = "status_prestador")
-    @JsonProperty("status_prestador")
+    @Column(name = "status")
+    @JsonProperty("status")
     @NotNull(message = "Status não pode ser nulo")
     private Boolean statusPrestador = Boolean.TRUE;
 

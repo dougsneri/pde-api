@@ -2,34 +2,36 @@ package br.edu.riobrancofac.pdeapi.controller;
 
 import br.edu.riobrancofac.pdeapi.entity.Contrato;
 import br.edu.riobrancofac.pdeapi.repository.ContratosRepository;
+import br.edu.riobrancofac.pdeapi.response.Response;
+import br.edu.riobrancofac.pdeapi.service.ContratoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "contratos")
 public class ContratoController {
 
+    private static final Logger log = LoggerFactory.getLogger(ContratoController.class);
+
     @Autowired
-    private ContratosRepository repository;
+    private ContratoService service;
 
     @GetMapping(value = "listar")
-    public List<Contrato> listarContratos() {
-        return repository.findAll();
+    public ResponseEntity<List<Contrato>> listarContratos() {
+        log.info("Listando Contratos.");
+        return service.listarContratos();
     }
 
     @PostMapping(value = "adicionar")
-    public Contrato adicionarPrestador(@RequestBody Contrato contrato) {
-
-        return repository.save(contrato);
-    }
-
-    @DeleteMapping(value = "excluir/{id}")
-    public Contrato deletar(@PathVariable Integer id) {
-        Contrato contratoDeletado = repository.getOne(id);
-        repository.deleteById(id);
-
-        return contratoDeletado;
+    public ResponseEntity<Response<Contrato>> adicionarContrato(@Valid @RequestBody Contrato contrato, BindingResult result) {
+        log.info("Adicionando um novo contrato.");
+        return service.adicionarContrato(contrato, result);
     }
 }
