@@ -29,7 +29,7 @@ public class PrestadorController {
     }
 
     @GetMapping(value = "pesquisar/por-cpf/{cpf}")
-    public ResponseEntity<Prestador> pesquisarPrestador(@PathVariable String cpf) {
+    public ResponseEntity<Response<Prestador>> pesquisarPrestador(@PathVariable String cpf) {
         log.info("Buscando prestador do cpf: " + cpf);
         return service.pesquisarCpfPrestador(cpf);
     }

@@ -29,7 +29,7 @@ public class ContratanteController {
     }
 
     @GetMapping(value = "pesquisar/por-cpf/{cpf}")
-    public ResponseEntity<Contratante> pesquisarContratante(@PathVariable String cpf) {
+    public ResponseEntity<Response<Contratante>> pesquisarContratante(@PathVariable String cpf) {
         log.info("Buscando contratante do cpf: " + cpf);
         return service.pesquisarCpfContratante(cpf);
     }

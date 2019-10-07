@@ -38,7 +38,7 @@ public class PrestadorService {
         }
 
         prestadorResponse.setData(repository.save(prestador));
-        return ResponseEntity.ok(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(prestadorResponse);
     }
 
     /*public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
@@ -64,18 +64,23 @@ public class PrestadorService {
     }*/
 
     public ResponseEntity<List<Prestador>> listarPrestadores() {
-        return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
     }
 
-    public ResponseEntity<Prestador> pesquisarCpfPrestador(String cpf) {
+    public ResponseEntity<Response<Prestador>> pesquisarCpfPrestador(String cpf) {
+        Response<Prestador> prestadorResponse = new Response<>();
         Prestador prestador = repository.findByCpf(cpf);
 
-        return new ResponseEntity<>(repository.getOne(prestador.getIdPrestador()), HttpStatus.OK);
+        if (prestador == null) {
+            prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
+            return ResponseEntity.badRequest().body(prestadorResponse);
+        }
+        prestadorResponse.setData(repository.getOne(prestador.getIdPrestador()));
+        return ResponseEntity.status(HttpStatus.OK).body(prestadorResponse);
     }
 
     public ResponseEntity<Response<Prestador>> desativarPrestador(String cpf) {
         Response<Prestador> prestadorResponse = new Response<>();
-
         Prestador prestadorParaDesativar = repository.findByCpf(cpf);
 
         if (prestadorParaDesativar == null) {
@@ -94,7 +99,7 @@ public class PrestadorService {
 
         prestadorResponse.setData(prestadorParaDesativar);
 
-        return new ResponseEntity<>(prestadorResponse, HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(prestadorResponse);
 
     }
 
@@ -119,7 +124,7 @@ public class PrestadorService {
 
         prestadorResponse.setData(prestadorParaAtivar);
 
-        return new ResponseEntity<>(prestadorResponse, HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(prestadorResponse);
     }
 
 //    private Integer getIdPrestadorCadastrado(Prestador prestador, BindingResult result) {

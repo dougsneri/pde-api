@@ -24,16 +24,16 @@ public class ContratoService {
     public ResponseEntity<Response<Contrato>> adicionarContrato(Contrato contrato, BindingResult result) {
         Response<Contrato> contratoResponse = new Response<>();
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> contratoResponse.getErrors().add(error.getDefaultMessage()));
             return ResponseEntity.badRequest().body(contratoResponse);
         }
 
         contratoResponse.setData(repository.save(contrato));
-        return ResponseEntity.ok(contratoResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(contratoResponse);
     }
 
     public ResponseEntity<List<Contrato>> listarContratos() {
-        return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
     }
 }

@@ -25,43 +25,48 @@ public class ContratanteService {
     public ResponseEntity<Response<Contratante>> adicionarContratante(Contratante contratante, BindingResult result) {
         Response<Contratante> contratanteResponse = new Response<>();
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> contratanteResponse.getErrors().add(error.getDefaultMessage()));
             return ResponseEntity.badRequest().body(contratanteResponse);
         }
 
         validaContratanteCadastrado(contratante, result);
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> contratanteResponse.getErrors().add(error.getDefaultMessage()));
             return ResponseEntity.badRequest().body(contratanteResponse);
         }
 
         contratanteResponse.setData(repository.save(contratante));
-        return ResponseEntity.ok(contratanteResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(contratanteResponse);
     }
 
     public ResponseEntity<List<Contratante>> listarContratantes() {
-        return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
     }
 
-    public ResponseEntity<Contratante> pesquisarCpfContratante(String cpf) {
+    public ResponseEntity<Response<Contratante>> pesquisarCpfContratante(String cpf) {
+        Response<Contratante> contratanteResponse = new Response<>();
         Contratante contratante = repository.findByCpf(cpf);
 
-        return new ResponseEntity<>(repository.getOne(contratante.getIdContratante()), HttpStatus.OK);
+        if (contratante == null) {
+            contratanteResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
+            return ResponseEntity.badRequest().body(contratanteResponse);
+        }
+        contratanteResponse.setData(repository.getOne(contratante.getIdContratante()));
+        return ResponseEntity.status(HttpStatus.OK).body(contratanteResponse);
     }
 
     public ResponseEntity<Response<Contratante>> desativarContratante(String cpf) {
         Response<Contratante> contratanteResponse = new Response<>();
-
         Contratante contratanteParaDesativar = repository.findByCpf(cpf);
 
-        if(contratanteParaDesativar == null) {
+        if (contratanteParaDesativar == null) {
             contratanteResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
             return ResponseEntity.badRequest().body(contratanteResponse);
         }
 
-        if(contratanteParaDesativar.getStatusContratante().equals(Boolean.FALSE)) {
+        if (contratanteParaDesativar.getStatusContratante().equals(Boolean.FALSE)) {
             contratanteResponse.getErrors().add("Este CPF já foi desativado.");
             return ResponseEntity.badRequest().body(contratanteResponse);
         }
@@ -72,7 +77,7 @@ public class ContratanteService {
 
         contratanteResponse.setData(contratanteParaDesativar);
 
-        return new ResponseEntity<>(contratanteResponse, HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(contratanteResponse);
 
     }
 
@@ -97,16 +102,16 @@ public class ContratanteService {
 
         contratanteResponse.setData(contratanteParaAtivar);
 
-        return new ResponseEntity<>(contratanteResponse, HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(contratanteResponse);
     }
 
     private void validaContratanteCadastrado(Contratante contratante, BindingResult result) {
         Contratante cpfContratanteJaCadastrado = repository.findByCpf(contratante.getCpf());
-        if(!(cpfContratanteJaCadastrado == null)) {
+        if (!(cpfContratanteJaCadastrado == null)) {
             result.addError(new ObjectError("contratante", "Este CPF já está cadastrado."));
         }
         Contratante emailContratanteJaCadastrado = repository.findByEmail(contratante.getEmail());
-        if(!(emailContratanteJaCadastrado == null)) {
+        if (!(emailContratanteJaCadastrado == null)) {
             result.addError(new ObjectError("contratante", "Este e-mail já está cadastrado."));
         }
     }
