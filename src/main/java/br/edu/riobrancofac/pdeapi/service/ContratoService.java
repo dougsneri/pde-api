@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,5 +36,11 @@ public class ContratoService {
 
     public ResponseEntity<List<Contrato>> listarContratos() {
         return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
+    }
+
+    public ResponseEntity<List<Contrato>> listarContratosEntreDatas(List<String> listaDeDatasInicioEFim) {
+        String dataInicio = listaDeDatasInicioEFim.get(0);
+        String dataFim = listaDeDatasInicioEFim.get(1);
+        return ResponseEntity.status(HttpStatus.OK).body(repository.findByDataServicoBetween(LocalDate.parse(dataInicio), LocalDate.parse(dataFim)));
     }
 }

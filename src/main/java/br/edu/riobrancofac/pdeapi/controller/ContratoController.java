@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -33,5 +34,11 @@ public class ContratoController {
     public ResponseEntity<Response<Contrato>> adicionarContrato(@Valid @RequestBody Contrato contrato, BindingResult result) {
         log.info("Adicionando um novo contrato.");
         return service.adicionarContrato(contrato, result);
+    }
+
+    @GetMapping(value = "listar/entre-datas")
+    public ResponseEntity<List<Contrato>> listarContratosEntreDatas(@RequestBody List<String> listaDeDatasInicioEFim) {
+        log.info("Listando contratos entre datas");
+        return service.listarContratosEntreDatas(listaDeDatasInicioEFim);
     }
 }
