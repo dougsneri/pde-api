@@ -4,13 +4,18 @@ import br.edu.riobrancofac.pdeapi.entity.Prestador;
 import br.edu.riobrancofac.pdeapi.repository.PrestadoresRepository;
 import br.edu.riobrancofac.pdeapi.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static br.edu.riobrancofac.pdeapi.service.utils.Complemento.getHttpHeaders;
 
 @Service
 public class PrestadorService {
@@ -27,18 +32,18 @@ public class PrestadorService {
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         validaPrestadorCadastrado(prestador, result);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         prestadorResponse.setData(repository.save(prestador));
-        return ResponseEntity.status(HttpStatus.CREATED).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(getHttpHeaders()).body(prestadorResponse);
     }
 
     /*public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
@@ -48,14 +53,14 @@ public class PrestadorService {
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         validaPrestadorNaoCadastrado(prestador, result);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         prestadorResponse.setData(repository.save(prestador));
@@ -64,7 +69,7 @@ public class PrestadorService {
     }*/
 
     public ResponseEntity<List<Prestador>> listarPrestadores() {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).headers(getHttpHeaders()).body(repository.findAll());
     }
 
     public ResponseEntity<Response<Prestador>> pesquisarCpfPrestador(String cpf) {
@@ -73,10 +78,10 @@ public class PrestadorService {
 
         if (prestador == null) {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
         prestadorResponse.setData(repository.getOne(prestador.getIdPrestador()));
-        return ResponseEntity.status(HttpStatus.OK).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.OK).headers(getHttpHeaders()).body(prestadorResponse);
     }
 
     public ResponseEntity<Response<Prestador>> desativarPrestador(String cpf) {
@@ -85,12 +90,12 @@ public class PrestadorService {
 
         if (prestadorParaDesativar == null) {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         if (prestadorParaDesativar.getStatusPrestador().equals(Boolean.FALSE)) {
             prestadorResponse.getErrors().add("Este CPF já foi desativado.");
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         prestadorParaDesativar.setStatusPrestador(Boolean.FALSE);
@@ -99,7 +104,7 @@ public class PrestadorService {
 
         prestadorResponse.setData(prestadorParaDesativar);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(getHttpHeaders()).body(prestadorResponse);
 
     }
 
@@ -110,12 +115,12 @@ public class PrestadorService {
 
         if (prestadorParaAtivar == null) {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         if (prestadorParaAtivar.getStatusPrestador().equals(Boolean.TRUE)) {
             prestadorResponse.getErrors().add("Este CPF já está ativo.");
-            return ResponseEntity.badRequest().body(prestadorResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
         }
 
         prestadorParaAtivar.setStatusPrestador(Boolean.TRUE);
@@ -124,7 +129,7 @@ public class PrestadorService {
 
         prestadorResponse.setData(prestadorParaAtivar);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(getHttpHeaders()).body(prestadorResponse);
     }
 
 //    private Integer getIdPrestadorCadastrado(Prestador prestador, BindingResult result) {

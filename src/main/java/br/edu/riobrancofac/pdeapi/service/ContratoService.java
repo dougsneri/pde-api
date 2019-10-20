@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import java.time.LocalDate;
 import java.util.List;
 
+import static br.edu.riobrancofac.pdeapi.service.utils.Complemento.getHttpHeaders;
+
 @Service
 public class ContratoService {
 
@@ -27,20 +29,20 @@ public class ContratoService {
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> contratoResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(contratoResponse);
+            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(contratoResponse);
         }
 
         contratoResponse.setData(repository.save(contrato));
-        return ResponseEntity.status(HttpStatus.CREATED).body(contratoResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(getHttpHeaders()).body(contratoResponse);
     }
 
     public ResponseEntity<List<Contrato>> listarContratos() {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).headers(getHttpHeaders()).body(repository.findAll());
     }
 
     public ResponseEntity<List<Contrato>> listarContratosEntreDatas(List<String> listaDeDatasInicioEFim) {
         String dataInicio = listaDeDatasInicioEFim.get(0);
         String dataFim = listaDeDatasInicioEFim.get(1);
-        return ResponseEntity.status(HttpStatus.OK).body(repository.findByDataServicoBetween(LocalDate.parse(dataInicio), LocalDate.parse(dataFim)));
+        return ResponseEntity.status(HttpStatus.OK).headers(getHttpHeaders()).body(repository.findByDataServicoBetween(LocalDate.parse(dataInicio), LocalDate.parse(dataFim)));
     }
 }
