@@ -16,7 +16,7 @@ public class PdeApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PdeApiApplication.class, args);
 	}
-
+/*
 	@Bean
 	public ServletWebServerFactory servletContainer() {
 		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -41,5 +41,5 @@ public class PdeApiApplication {
 		connector.setSecure(false);
 		connector.setRedirectPort(8443);
 		return connector;
-	}
+	}*/
 }
