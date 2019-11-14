@@ -32,18 +32,18 @@ public class PrestadorService {
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
         validaPrestadorCadastrado(prestador, result);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
         prestadorResponse.setData(repository.save(prestador));
-        return ResponseEntity.status(HttpStatus.CREATED).headers(getHttpHeaders()).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(prestadorResponse);
     }
 
     /*public ResponseEntity<Response<Prestador>> atualizarPrestador(Prestador prestador, BindingResult result) {
@@ -69,7 +69,7 @@ public class PrestadorService {
     }*/
 
     public ResponseEntity<List<Prestador>> listarPrestadores() {
-        return ResponseEntity.status(HttpStatus.OK).headers(getHttpHeaders()).body(repository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
     }
 
     public ResponseEntity<Response<Prestador>> pesquisarCpfPrestador(String cpf) {
@@ -78,10 +78,10 @@ public class PrestadorService {
 
         if (prestador == null) {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
         prestadorResponse.setData(repository.getOne(prestador.getIdPrestador()));
-        return ResponseEntity.status(HttpStatus.OK).headers(getHttpHeaders()).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(prestadorResponse);
     }
 
     public ResponseEntity<Response<Prestador>> desativarPrestador(String cpf) {
@@ -90,12 +90,12 @@ public class PrestadorService {
 
         if (prestadorParaDesativar == null) {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
         if (prestadorParaDesativar.getStatusPrestador().equals(Boolean.FALSE)) {
             prestadorResponse.getErrors().add("Este CPF já foi desativado.");
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
         prestadorParaDesativar.setStatusPrestador(Boolean.FALSE);
@@ -104,7 +104,7 @@ public class PrestadorService {
 
         prestadorResponse.setData(prestadorParaDesativar);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(getHttpHeaders()).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(prestadorResponse);
 
     }
 
@@ -115,12 +115,12 @@ public class PrestadorService {
 
         if (prestadorParaAtivar == null) {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
         if (prestadorParaAtivar.getStatusPrestador().equals(Boolean.TRUE)) {
             prestadorResponse.getErrors().add("Este CPF já está ativo.");
-            return ResponseEntity.badRequest().headers(getHttpHeaders()).body(prestadorResponse);
+            return ResponseEntity.badRequest().body(prestadorResponse);
         }
 
         prestadorParaAtivar.setStatusPrestador(Boolean.TRUE);
@@ -129,7 +129,7 @@ public class PrestadorService {
 
         prestadorResponse.setData(prestadorParaAtivar);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).headers(getHttpHeaders()).body(prestadorResponse);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(prestadorResponse);
     }
 
 //    private Integer getIdPrestadorCadastrado(Prestador prestador, BindingResult result) {

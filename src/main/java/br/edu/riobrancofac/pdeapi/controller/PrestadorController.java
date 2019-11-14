@@ -23,18 +23,21 @@ public class PrestadorController {
     private PrestadorService service;
 
     @GetMapping(value = "listar")
+    @CrossOrigin
     public ResponseEntity<List<Prestador>> listarPrestadores() {
         log.info("Listando Prestadores.");
         return service.listarPrestadores();
     }
 
     @GetMapping(value = "pesquisar/por-cpf/{cpf}")
+    @CrossOrigin
     public ResponseEntity<Response<Prestador>> pesquisarPrestador(@PathVariable String cpf) {
         log.info("Buscando prestador do cpf: " + cpf + ".");
         return service.pesquisarCpfPrestador(cpf);
     }
 
     @PostMapping(value = "adicionar")
+    @CrossOrigin
     public ResponseEntity<Response<Prestador>> adicionarPrestador(@Valid @RequestBody Prestador prestador, BindingResult result) {
         log.info("Cadastrando Prestador: " + prestador.getNome() + " " + prestador.getSobrenome() + ".");
         return service.adicionarPrestador(prestador, result);
@@ -47,12 +50,14 @@ public class PrestadorController {
 //    }
 
     @PostMapping(value = "desativar/por-cpf/{cpf}")
+    @CrossOrigin
     public ResponseEntity<Response<Prestador>> desativarPrestador(@PathVariable String cpf) {
         log.info("Desativando Prestador do cpf : " + cpf + ".");
         return service.desativarPrestador(cpf);
     }
 
     @PostMapping(value = "ativar/por-cpf/{cpf}")
+    @CrossOrigin
     public ResponseEntity<Response<Prestador>> ativarPrestador(@PathVariable String cpf) {
         log.info("Ativando Prestador do cpf : " + cpf + ".");
         return service.ativarPrestador(cpf);
