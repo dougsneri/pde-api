@@ -25,18 +25,21 @@ public class ContratoController {
     private ContratoService service;
 
     @GetMapping(value = "listar")
+    @CrossOrigin
     public ResponseEntity<List<Contrato>> listarContratos() {
         log.info("Listando Contratos.");
         return service.listarContratos();
     }
 
     @PostMapping(value = "adicionar")
+    @CrossOrigin
     public ResponseEntity<Response<Contrato>> adicionarContrato(@Valid @RequestBody Contrato contrato, BindingResult result) {
         log.info("Adicionando um novo contrato.");
         return service.adicionarContrato(contrato, result);
     }
 
     @GetMapping(value = "listar/entre-datas")
+    @CrossOrigin
     public ResponseEntity<List<Contrato>> listarContratosEntreDatas(@RequestBody List<String> listaDeDatasInicioEFim) {
         log.info("Listando contratos entre datas");
         return service.listarContratosEntreDatas(listaDeDatasInicioEFim);
