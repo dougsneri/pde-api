@@ -1,5 +1,6 @@
 package br.edu.riobrancofac.pdeapi.controller;
 
+import br.edu.riobrancofac.pdeapi.dto.ContratoDTO;
 import br.edu.riobrancofac.pdeapi.entity.Contrato;
 import br.edu.riobrancofac.pdeapi.repository.ContratosRepository;
 import br.edu.riobrancofac.pdeapi.response.Response;
@@ -33,9 +34,9 @@ public class ContratoController {
 
     @PostMapping(value = "adicionar")
     @CrossOrigin
-    public ResponseEntity<Response<Contrato>> adicionarContrato(@Valid @RequestBody Contrato contrato, BindingResult result) {
+    public ResponseEntity<Response<Contrato>> adicionarContrato(@Valid @RequestBody ContratoDTO contratoDTO, BindingResult result) {
         log.info("Adicionando um novo contrato.");
-        return service.adicionarContrato(contrato, result);
+        return service.adicionarContrato(contratoDTO, result);
     }
 
     @GetMapping(value = "listar/entre-datas")

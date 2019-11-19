@@ -68,6 +68,7 @@ public class FormataDados {
     }
 
     public static String removeFormatacao(String dado) {
+        if(dado == null) return null;
         String dadoSemFormatacao = dado;
         dadoSemFormatacao = dadoSemFormatacao.replace(".", "");
         dadoSemFormatacao = dadoSemFormatacao.replace("-", "");

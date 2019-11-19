@@ -1,5 +1,7 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "contratos")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Contrato implements Serializable {
 
     private static final long serialVersionUID = 1L;
