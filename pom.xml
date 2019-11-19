@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.edu.riobrancofac</groupId>
 	<artifactId>pde-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.0</version>
 	<packaging>war</packaging>
 	<name>pde-api</name>
 	<description>Limpaki</description>
