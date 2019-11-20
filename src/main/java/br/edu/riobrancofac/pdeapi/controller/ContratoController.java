@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class ContratoController {
     @Autowired
     private ContratoService service;
 
-    @GetMapping(value = "listar")
+    @GetMapping(value = "listar/contratos/todos")
     @CrossOrigin
     public ResponseEntity<List<Contrato>> listarContratos() {
-        log.info("Listando Contratos.");
+        log.info("Listando Todos os Contratos.");
         return service.listarContratos();
     }
 
@@ -45,4 +46,19 @@ public class ContratoController {
         log.info("Listando contratos entre datas");
         return service.listarContratosEntreDatas(listaDeDatasInicioEFim);
     }
+
+    @GetMapping(value = "listar/contratos/prestadores-por-cpf/{cpf}")
+    @CrossOrigin
+    public ResponseEntity<List<Contrato>> listarContratosPrestadoresPorCpf(@PathVariable String cpf) {
+        log.info("Listando Contratos do Prestador Sob o cpf : " + cpf + ".");
+        return service.listarContratosDePrestadoresPorCpf(cpf);
+    }
+
+    @GetMapping(value = "listar/contratos/contratantes-por-cpf/{cpf}")
+    @CrossOrigin
+    public ResponseEntity<List<Contrato>> listarContratosContratantesPorCpf(@PathVariable String cpf) {
+        log.info("Listando Contratos do Contratante Sob o Cpf : " + cpf + ".");
+        return service.listarContratosDeContratantesPorCpf(cpf);
+    }
+
 }

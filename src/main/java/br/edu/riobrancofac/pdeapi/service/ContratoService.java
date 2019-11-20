@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static br.edu.riobrancofac.pdeapi.service.utils.Complemento.getHttpHeaders;
 
@@ -51,6 +52,7 @@ public class ContratoService {
 
     public ResponseEntity<List<Contrato>> listarContratos() {
         List<Contrato> contratos = repositoryContratos.findAll();
+
         for(Contrato contrato : contratos) {
             contrato.getContratante().setStatusContratante(null);
             contrato.getContratante().setDataNascimento(null);
@@ -83,5 +85,25 @@ public class ContratoService {
         String dataInicio = listaDeDatasInicioEFim.get(0);
         String dataFim = listaDeDatasInicioEFim.get(1);
         return ResponseEntity.status(HttpStatus.OK).body(repositoryContratos.findByDataServicoBetween(LocalDate.parse(dataInicio), LocalDate.parse(dataFim)));
+    }
+
+    public ResponseEntity<List<Contrato>> listarContratosDePrestadoresPorCpf(String cpf) {
+        List<Contrato> contratos = repositoryContratos.findAll();
+
+        List<Contrato> contratosPorCpf = contratos.stream()
+                .filter(contrato -> contrato.getPrestador().getCpf().equals(cpf))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(contratosPorCpf);
+    }
+
+    public ResponseEntity<List<Contrato>> listarContratosDeContratantesPorCpf(String cpf) {
+        List<Contrato> contratos = repositoryContratos.findAll();
+
+        List<Contrato> contratosPorCpf = contratos.stream()
+                .filter(contrato -> contrato.getContratante().getCpf().equals(cpf))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(contratosPorCpf);
     }
 }
