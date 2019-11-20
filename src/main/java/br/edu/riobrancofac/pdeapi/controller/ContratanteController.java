@@ -6,6 +6,7 @@ import br.edu.riobrancofac.pdeapi.service.ContratanteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,13 @@ public class ContratanteController {
     public ResponseEntity<Response<Contratante>> ativarContratante(@PathVariable String cpf) {
         log.info("Ativando Contratante do cpf : " + cpf);
         return service.ativarContratante(cpf);
+    }
+
+    @GetMapping(value = "testa-deploy")
+    public ResponseEntity<String> testaDeploy() {
+        String teste = "Deploy Realizado: v1";
+        log.info(teste);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(teste);
     }
 
 }
