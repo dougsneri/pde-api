@@ -11,7 +11,7 @@
 	<groupId>br.edu.riobrancofac</groupId>
 	<artifactId>pde-api</artifactId>
 	<version>0.0.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>pde-api</name>
 	<description>Limpaki</description>
 
