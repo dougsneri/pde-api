@@ -170,9 +170,9 @@ public class Prestador implements Serializable {
         this.telefone2 = removeFormatacao(telefone2);
     }
 
-	public List<ServicoQueOferece> getServicosQueOferece() {
-		return FormataDados.transformaStringEmLista(getServicosQueRealizaString());
-	}
+//	public List<ServicoQueOferece> getServicosQueOferece() {
+//		return FormataDados.transformaStringEmLista(getServicosQueRealizaString());
+//	}
 
 //	public void setServicosQueOferece(List<ServicoQueOferece> servicosQueOferece) {
 //		this.servicosQueOferece = servicosQueOferece;

@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -57,4 +58,9 @@ public class Contrato implements Serializable {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private LocalDate dataCadastroContrato = LocalDate.now();
+    
+    @Column(name = "valor_do_servico")
+    @JsonProperty("valor_do_servico")
+    @NotNull(message = "Valor do serviço não pode ser nula.")
+    private BigDecimal valorDoServico;
 }

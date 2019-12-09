@@ -40,6 +40,7 @@ public class ContratoService {
         contrato.setServicoPrestado(contratoDTO.getContrato().getServicoPrestado());
         contrato.setContratante(repositoryContratantes.findByCpf(contratoDTO.getCpfContratante()));
         contrato.setPrestador(repositoryPrestadores.findByCpf(contratoDTO.getCpfPrestador()));
+        contrato.setValorDoServico(contratoDTO.getContrato().getValorDoServico());
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> contratoResponse.getErrors().add(error.getDefaultMessage()));

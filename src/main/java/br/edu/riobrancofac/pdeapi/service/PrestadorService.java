@@ -79,7 +79,11 @@ public class PrestadorService {
     }*/
 
     public ResponseEntity<List<Prestador>> listarPrestadores() {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
+    	List<Prestador> prestadores = repository.findAll();
+    	for(Prestador prestador : prestadores) {
+    		prestador.setServicosQueOferece(FormataDados.transformaStringEmLista(prestador.getServicosQueRealizaString()));
+    	}
+        return ResponseEntity.status(HttpStatus.OK).body(prestadores);
     }
 
     public ResponseEntity<Response<Prestador>> pesquisarCpfPrestador(String cpf) {
@@ -90,6 +94,7 @@ public class PrestadorService {
             prestadorResponse.getErrors().add("Este CPF não existe em nossa base de dados.");
             return ResponseEntity.badRequest().body(prestadorResponse);
         }
+        prestador.setServicosQueOferece(FormataDados.transformaStringEmLista(prestador.getServicosQueRealizaString()));
         prestadorResponse.setData(repository.getOne(prestador.getIdPrestador()));
         return ResponseEntity.status(HttpStatus.OK).body(prestadorResponse);
     }
