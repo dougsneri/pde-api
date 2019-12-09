@@ -1,13 +1,18 @@
 package br.edu.riobrancofac.pdeapi.utils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import br.com.caelum.stella.format.CNPJFormatter;
 import br.com.caelum.stella.format.CPFFormatter;
+import br.edu.riobrancofac.pdeapi.entity.ServicoQueOferece;
 
 public class FormataDados {
 
@@ -120,4 +125,30 @@ public class FormataDados {
 
         return campo;
     }
+    
+    public static String transformaListaEmStringSeparadaPorPontoEVirgula(List<ServicoQueOferece> servicos) {
+		StringBuilder stb = new StringBuilder();
+		
+		for(ServicoQueOferece servico : servicos) {
+			stb.append(servico.getDescricao().toString() + "," + servico.getValor().toString() + ";");
+		}
+		
+		return new StringBuilder(stb.substring(0, stb.length()-1)).toString();
+	}
+	
+	public static List<ServicoQueOferece> transformaStringEmLista(String servicosConcatenados) {
+		
+		List<ServicoQueOferece> listaServicos = new ArrayList<>();
+		
+		List<String> listServicosValores = Arrays.asList(servicosConcatenados.split(";"));
+		ArrayList<String> arrayListServicosValores = new ArrayList<String>(listServicosValores);
+
+		for (String a : arrayListServicosValores) {
+			List<String> listServicoValorQuebrada = Arrays.asList(a.split(","));
+			ArrayList<String> arrayListServicosValoresQuebrados = new ArrayList<String>(listServicoValorQuebrada);
+			listaServicos.add(new ServicoQueOferece(arrayListServicosValoresQuebrados.get(0).toString(), new BigDecimal(arrayListServicosValoresQuebrados.get(1).toString())));
+		}
+		
+		return listaServicos;
+	}
 }

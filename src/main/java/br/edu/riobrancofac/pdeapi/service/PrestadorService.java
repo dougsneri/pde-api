@@ -3,6 +3,8 @@ package br.edu.riobrancofac.pdeapi.service;
 import br.edu.riobrancofac.pdeapi.entity.Prestador;
 import br.edu.riobrancofac.pdeapi.repository.PrestadoresRepository;
 import br.edu.riobrancofac.pdeapi.response.Response;
+import br.edu.riobrancofac.pdeapi.utils.FormataDados;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,6 +31,14 @@ public class PrestadorService {
 
     public ResponseEntity<Response<Prestador>> adicionarPrestador(Prestador prestador, BindingResult result) {
         Response<Prestador> prestadorResponse = new Response<>();
+        
+        if(!(prestador.getServicosQueOferece() == null) && !(prestador.getServicosQueOferece().isEmpty())) {
+        	prestador.setServicosQueRealizaString(FormataDados.transformaListaEmStringSeparadaPorPontoEVirgula(prestador.getServicosQueOferece()));
+        }
+        
+        if(prestador.getServicosQueOferece() == null || prestador.getServicosQueOferece().isEmpty()) {
+        	prestador.setServicosQueRealizaString("");
+        }
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> prestadorResponse.getErrors().add(error.getDefaultMessage()));

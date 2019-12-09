@@ -1,10 +1,14 @@
 package br.edu.riobrancofac.pdeapi.entity;
 
 import br.edu.riobrancofac.pdeapi.enums.Genero;
+import br.edu.riobrancofac.pdeapi.utils.FormataDados;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -17,6 +21,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static br.edu.riobrancofac.pdeapi.utils.FormataDados.removeFormatacao;
@@ -26,6 +31,25 @@ import static br.edu.riobrancofac.pdeapi.utils.FormataDados.removeFormatacao;
 @Table(name = "prestadores")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+	"id_prestador",
+	"cpf",
+	"nome",
+	"sobrenome",
+	"data_nascimento",
+	"ddd1",
+	"telefone1",
+	"ddd2",
+	"telefone2",
+	"email",
+	"status",
+	"genero",
+	"senha",
+	"data_cadastro_prestador",
+	"servicos_oferecidos",
+	"endereco",
+	"servicos_oferecidos"
+})
 public class Prestador implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -112,6 +136,16 @@ public class Prestador implements Serializable {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private LocalDate dataCadastroPrestador = LocalDate.now();
+    
+    @JsonProperty("servicos_oferecidos")
+    @NotNull(message = "A lista de serviços oferecidos não pode ser nula")
+    @Transient
+    private List<ServicoQueOferece> servicosQueOferece = new ArrayList<>();
+    
+//    @NotNull(message = "Servicos String não pode ser nula")
+    @JsonIgnore
+    @Column(name = "servicos_que_oferece")
+    private String servicosQueRealizaString;
 
     @Embedded
     private Endereco endereco;
@@ -135,5 +169,27 @@ public class Prestador implements Serializable {
     public void setTelefone2(String telefone2) {
         this.telefone2 = removeFormatacao(telefone2);
     }
+
+	public List<ServicoQueOferece> getServicosQueOferece() {
+		return FormataDados.transformaStringEmLista(getServicosQueRealizaString());
+	}
+
+//	public void setServicosQueOferece(List<ServicoQueOferece> servicosQueOferece) {
+//		this.servicosQueOferece = servicosQueOferece;
+//	}
+
+//	@JsonIgnore
+//	public String getServicosQueRealizaString() {
+//		return servicosQueRealizaString;
+//	}
+//
+//	@JsonIgnore
+//	public void setServicosQueRealizaString(String servicosQueRealizaString) {
+//		this.servicosQueRealizaString = FormataDados.transformaListaEmStringSeparadaPorPontoEVirgula(getServicosQueOferece());
+//	}
+	
+	public void arrumaACasa() {
+		
+	}
 
 }
